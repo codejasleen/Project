@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Warranty Review Public Demo</title>
+  <style>
+    body{font:15px system-ui,sans-serif;background:#f5f7f9;color:#17202a;margin:0}.wrap{max-width:900px;margin:32px auto;padding:0 18px}
+    h1{margin-bottom:4px}.note{color:#566573}.card{background:#fff;border:1px solid #dfe6e9;border-radius:10px;padding:20px;margin-top:18px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}label{display:block;font-weight:600}input,select{width:100%;box-sizing:border-box;padding:9px;margin-top:4px;border:1px solid #bfc9ca;border-radius:5px}
+    button{margin-top:16px;background:#155e75;color:#fff;border:0;border-radius:6px;padding:11px 18px;font-weight:700;cursor:pointer}.result{display:none}.score{font-size:28px;font-weight:750}.review{color:#9a3412}.ok{color:#166534}li{margin:7px 0}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body><main class="wrap">
+  <h1>Warranty review public demo</h1>
+  <p class="note">This screen uses fictional data and a synthetic demo model. It does not contain production records or validated fraud estimates.</p>
+  <form id="form" class="card"><div class="grid">
+    <label>Claim ID<input name="claim_id" value="SYNTH-CLAIM-001" required></label>
+    <label>Submitted at<input name="submitted_at" value="2030-01-15 10:00" required></label>
+    <label>Partner ID<input name="partner_id" value="DEMO-PARTNER-ALPHA" required></label>
+    <label>SKU<input name="sku" value="DEMO-SKU-A1" required></label>
+    <label>Product serial<input name="product_serial" value="DEMO-SN-000001" required></label>
+    <label>Days since purchase<input name="days_since_purchase" type="number" value="180" min="0" required></label>
+    <label>Claim amount (fictional ₹)<input name="claim_amount_inr" type="number" value="2600" min="1" required></label>
+    <label>Prior demo claims<input name="customer_prior_claims" type="number" value="1" min="0"></label>
+    <label>Photo attached<select name="photo_attached"><option>Y</option><option>N</option></select></label>
+    <label>Partner inspected<select name="partner_inspected"><option>N</option><option>Y</option></select></label>
+    <label>Fault description<input name="claim_description" value="demo unit does not start"></label>
+    <label>Inspector note<input name="inspector_note" value="synthetic demonstration record"></label>
+  </div><button type="submit">Score demo claim</button></form>
+  <section id="result" class="card result"><div id="score" class="score"></div><h2 id="decision"></h2><h3 id="explanation-title"></h3><div id="higher-block"><h4>Higher-risk signals</h4><ul id="higher-signals"></ul></div><div id="lower-block"><h4>Lower-risk signals</h4><ul id="lower-signals"></ul></div><p id="explanation-disclaimer" class="note"></p><p id="warnings" class="note"></p></section>
+</main><script>
+const renderSignals=(id,items)=>{const list=document.getElementById(id);list.replaceChildren(...items.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));list.parentElement.style.display=items.length?'block':'none';};
+document.getElementById('form').addEventListener('submit',async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));data.days_since_purchase=+data.days_since_purchase;data.claim_amount_inr=+data.claim_amount_inr;data.customer_prior_claims=+data.customer_prior_claims;data.source='demo';const response=await fetch('/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const output=await response.json();if(!response.ok){alert(JSON.stringify(output));return;}document.getElementById('result').style.display='block';document.getElementById('score').textContent=`Illustrative risk score: ${(output.fraud_score*100).toFixed(2)}%`;const queued=output.review_recommendation==='queue_for_human_review';const decision=document.getElementById('decision');decision.textContent=queued?'Prioritise for demo review':'Do not prioritise for demo review';decision.className=queued?'review':'ok';document.getElementById('explanation-title').textContent=output.explanation.title;renderSignals('higher-signals',output.explanation.higher_risk_signals);renderSignals('lower-signals',output.explanation.lower_risk_signals);document.getElementById('explanation-disclaimer').textContent=output.explanation.disclaimer;document.getElementById('warnings').textContent=output.warnings.join(' ');});
+</script></body></html>
+

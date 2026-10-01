@@ -1,0 +1,18 @@
+{
+  "notice": "All values in this file are fictional and created for the public demonstration.",
+  "partners": [
+    {"partner_id": "DEMO-PARTNER-ALPHA", "city": "Demo City North", "partner_type": "demo_service_centre", "recent_demo_claims": 3},
+    {"partner_id": "DEMO-PARTNER-BETA", "city": "Demo City South", "partner_type": "demo_franchise", "recent_demo_claims": 1},
+    {"partner_id": "DEMO-PARTNER-GAMMA", "city": "Demo City West", "partner_type": "demo_technician", "recent_demo_claims": 0}
+  ],
+  "products": [
+    {"sku": "DEMO-SKU-A1", "family": "demo_appliance_alpha", "list_price_inr": 5000, "warranty_months": 12},
+    {"sku": "DEMO-SKU-B2", "family": "demo_appliance_beta", "list_price_inr": 8000, "warranty_months": 18},
+    {"sku": "DEMO-SKU-C3", "family": "demo_appliance_gamma", "list_price_inr": 12000, "warranty_months": 24}
+  ],
+  "defaults": {
+    "partner": {"partner_id": "DEMO-PARTNER-UNKNOWN", "city": "Unknown Demo City", "partner_type": "unknown_demo_type", "recent_demo_claims": 0},
+    "product": {"sku": "DEMO-SKU-UNKNOWN", "family": "unknown_demo_family", "list_price_inr": 7000, "warranty_months": 12}
+  }
+}
+

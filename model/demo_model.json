@@ -1,0 +1,26 @@
+{
+  "name": "Synthetic logistic demonstration model",
+  "version": "public-demo-v1",
+  "intercept": -2.3,
+  "review_threshold": 0.3,
+  "feature_weights": {
+    "claim_amount_ratio": 0.9,
+    "purchase_age_years": -0.5,
+    "customer_prior_claims": 0.35,
+    "partner_recent_claims": 0.12,
+    "missing_photo": 0.4,
+    "uninspected": 0.55,
+    "serial_format_issue": 0.3
+  },
+  "partner_adjustments": {
+    "DEMO-PARTNER-ALPHA": 0.25,
+    "DEMO-PARTNER-BETA": -0.15,
+    "DEMO-PARTNER-GAMMA": 0.0
+  },
+  "sku_adjustments": {
+    "DEMO-SKU-A1": -0.15,
+    "DEMO-SKU-B2": 0.1,
+    "DEMO-SKU-C3": 0.0
+  }
+}
+

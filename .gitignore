@@ -23,7 +23,6 @@ test*.csv
 partners.csv
 products.csv
 sample_submission.csv
-predictions.csv
 prediction_checks.json
 model/reference.json
 model/*.cbm
